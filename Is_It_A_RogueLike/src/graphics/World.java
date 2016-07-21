@@ -2,6 +2,8 @@ package graphics;
 
 import java.awt.Color;
 
+import bestiary.Creature;
+
 public class World {
 	
     private Tile[][] tiles;
@@ -49,6 +51,37 @@ public class World {
     public Color color(int x, int y){
         return tile(x, y).getColor();
     }
+        
+    /**
+     * Transform the given Tile of the 2D Array into a FLOOR tile
+     * 
+     * @param x The index of the first Array
+     * @param y The index of the second Array
+     */
+    public void dig(int x, int y) {
+        if (tile(x,y).isDiggable())
+            tiles[x][y] = Tile.FLOOR;
+    }
+
+	/**
+	 * Loop over the world map coordinates randomly until a GROUND tile is found
+	 * then place the given Creature there.
+	 * 
+	 * @param creature
+	 */
+	public void addAtEmptyLocation(Creature creature){
+	    int x;
+	    int y;
+
+	    do {
+	        x = (int)(Math.random() * width);
+	        y = (int)(Math.random() * height);
+	    }
+	    while (!tile(x,y).isGround());
+
+	    creature.setX(x);
+	    creature.setY(y);
+	}
 
 	public Tile[][] getTiles() {
 		return tiles;
