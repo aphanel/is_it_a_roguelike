@@ -6,10 +6,6 @@ import asciiPanel.AsciiPanel;
 
 public class StartScreen implements Screen {
 
-	public StartScreen() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public void displayOutput(AsciiPanel terminal) {
         terminal.write("is it a roguelike ?", 1, 1);
