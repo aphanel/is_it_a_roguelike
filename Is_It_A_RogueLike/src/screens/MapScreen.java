@@ -10,7 +10,7 @@ import graphics.WorldBuilder;
 
 public class MapScreen implements Screen {
 	
-	private World world;
+	private World world = null;
 	private CreatureFactory creatureFactory;
 	private Creature player;
     private int screenWidth;
@@ -21,7 +21,7 @@ public class MapScreen implements Screen {
         screenHeight = 21;
         createWorld();
         creatureFactory = new CreatureFactory(getWorld());
-        player = creatureFactory.newPlayer();
+        createCreatures(creatureFactory);
 	}
 	
 	/**
@@ -39,7 +39,6 @@ public class MapScreen implements Screen {
 		int left = getScrollX();
         int top = getScrollY();   
         displayTiles(terminal, left, top);
-        terminal.write(player.getGlyph(), player.getX() - left, player.getY() - top, player.getColor());
         terminal.writeCenter("-- press [escape] to lose or [enter] to win --", 22);
 
 	}
@@ -67,6 +66,19 @@ public class MapScreen implements Screen {
         return this;
 	}
 	
+	/**
+	 * Handles all the creatures creation
+	 * 
+	 * @param creatureFactory
+	 */
+	private void createCreatures(CreatureFactory creatureFactory){
+	    player = creatureFactory.newPlayer();
+	  
+	    for (int i = 0; i < 8; i++){
+	        creatureFactory.newKobold();
+	    }
+	}
+	
 	public int getScrollX() {
 	    return Math.max(0, Math.min(player.getX() - screenWidth / 2, world.getWidth() - screenWidth));
 	}
@@ -75,14 +87,26 @@ public class MapScreen implements Screen {
 	    return Math.max(0, Math.min(player.getY() - screenHeight / 2, world.getHeight() - screenHeight));
 	}
 	
+	/**
+	 * Handles the tiles output on the terminal. First, it loops over the 2D Array and outputs the world tiles.
+	 * Then, it loops over all the creatures and outputs them. Complexity roughly O(n2+k)
+	 * 
+	 * @param terminal
+	 * @param left integer calculated by getScrollX method
+	 * @param top integer calculated by getScrollY method
+	 */
 	private void displayTiles(AsciiPanel terminal, int left, int top) {
 	    for (int x = 0; x < screenWidth; x++){
 	        for (int y = 0; y < screenHeight; y++){
 	            int wx = x + left;
 	            int wy = y + top;
-
 	            terminal.write(world.glyph(wx, wy), x, y, world.color(wx, wy));
 	        }
+	    }
+	    for (Creature c : world.getCreatures()) {
+	    	if(c.getX()<left+screenWidth && c.getX()>=left && c.getY()<top+screenHeight && c.getY()>=top && c != null){
+	                terminal.write(c.getGlyph(), c.getX() - left, c.getY() - top, c.getColor());	    		
+	    	}
 	    }
 	}
 
