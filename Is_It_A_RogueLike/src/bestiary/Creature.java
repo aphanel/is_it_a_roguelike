@@ -31,8 +31,23 @@ public class Creature {
 		world.dig(wx, wy);
 	}
 
+	/**
+	 * Handles the creature's movements and check if should attack or not
+	 * 
+	 * @param mx movement on the x axis
+	 * @param my movement on the y axis
+	 */
 	public void moveBy(int mx, int my){
-	    ai.onEnter(x+mx, y+my, world.tile(x+mx, y+my));
+		Creature other = world.creature(x+mx, y+my);
+		  
+	    if (other == null)
+	        ai.onEnter(x+mx, y+my, world.tile(x+mx, y+my));
+	    else
+	        attack(other);
+	}
+	
+	public void attack(Creature other){
+	    world.remove(other);
 	}
 
 	public World getWorld() {
