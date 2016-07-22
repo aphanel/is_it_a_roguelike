@@ -22,6 +22,18 @@ public class CreatureFactory {
 	    new PlayerAi(player);
 	    return player;
 	}
+	
+	/**
+	 * new Kobold factory method used to build a new kobold monster
+	 * 
+	 * @return kobold
+	 */
+	public Creature newKobold(){
+	    Creature kobold = new Creature(world, 'k', AsciiPanel.brightGreen);
+	    world.addAtEmptyLocation(kobold);
+	    new KoboldAi(kobold);
+	    return kobold;
+	}
 
 	public World getWorld() {
 		return world;
