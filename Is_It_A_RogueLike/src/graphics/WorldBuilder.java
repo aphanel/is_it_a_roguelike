@@ -34,7 +34,7 @@ public class WorldBuilder {
     }
     
     /**
-     * Implementation of the cellular automata algorithm. Evaluates neigbouring tiles of the 2D Array and
+     * Implementation of the cellular automaton algorithm. Evaluates neigbouring tiles of the 2D Array and
      * creates larger and larger areas of WALL or FLOOR tiles
      * 
      * @param times
