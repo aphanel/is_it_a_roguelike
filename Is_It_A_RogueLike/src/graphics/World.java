@@ -1,6 +1,8 @@
 package graphics;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import bestiary.Creature;
 
@@ -9,11 +11,13 @@ public class World {
     private Tile[][] tiles;
     private int width;
     private int height;
+    private List<Creature> creatures = null;
 
     public World(Tile[][] tiles){
         this.tiles = tiles;
         this.width = tiles.length;
         this.height = tiles[0].length;
+        this.creatures = new ArrayList<Creature>();
     }
     
     /**
@@ -77,10 +81,35 @@ public class World {
 	        x = (int)(Math.random() * width);
 	        y = (int)(Math.random() * height);
 	    }
-	    while (!tile(x,y).isGround());
+	    while (!tile(x,y).isGround()|| creature(x,y) != null);
 
 	    creature.setX(x);
 	    creature.setY(y);
+	    creatures.add(creature);
+	}
+	
+	/**
+	 * Loop over the creatures List and check if one of these is at the location (x, y)
+	 * 
+	 * @param x The index of the first Array
+	 * @param y The index of the second Array
+	 * @return Creature object or null if not found
+	 */
+	public Creature creature(int x, int y){
+	    for (Creature c : creatures){
+	        if (c.getX() == x && c.getY() == y)
+	            return c;
+	    }
+	    return null;
+	}
+	
+	/**
+	 * Remove a creature from the creatures List object
+	 * 
+	 * @param other A creature object
+	 */
+	public void remove(Creature other) {
+	    creatures.remove(other);
 	}
 
 	public Tile[][] getTiles() {
@@ -105,6 +134,14 @@ public class World {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public List<Creature> getCreatures() {
+		return creatures;
+	}
+
+	public void setCreatures(List<Creature> creatures) {
+		this.creatures = creatures;
 	}
 
 }
